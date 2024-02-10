@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment{
+        PATH = "$PATH:/opt/apache-maven-3.9.6/bin"
+    }
+
+    stages {
+        stage('GetCode') {
+            steps {
+                git branch: 'main', changelog: false, credentialsId: '0e003e54-8f08-41cd-8b4e-8a0c070a5891', poll: false, url: 'https://github.com/lax66/codeMaven.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('SonarQUBE') {
+            steps {
+                withSonarQubeEnv('sonar-server'){
+                    sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar'
+                }
+            }
+        }
+        stage('Deploy_tomcat') {
+            steps {
+                sshagent(['PEMkey']) {
+                    sh 'scp -o StrictHostKeyChecking=no target/firstProject.war ubuntu@13.233.43.131:/home/ubuntu/apache-tomcat-9.0.85/webapps'
+                }
+            }
+        }
+    }
+}
