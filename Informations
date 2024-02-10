@@ -1,0 +1,11 @@
+1. Try to use same versions on the both instances and jenkins server.
+2. check the pom.xml file properly. adding plugin is mandatory for maven to build.
+3. checked trying to add token for sonar in pipeline script. DID NOT worked. use password and login id.
+4. I was not able to deploy the war file on the same jankins machine. As its running the jenkins and maven both.
+5. Maven should be deployed in the jenkins machine.
+6.Sonarqube and tomcat will be different server.
+7.DON'T forget to add the sonar url as properties in pom.xml. deploy command i tried changing to cp <filename> /dir/filename , 
+                did not worked for the same machine. have to use differnt machine use "scp" command [scp -o StrickKeyChecking=no]
+8. check the port is open on instances.
+9. all tools should run on the unique ports.
+10. Use all the compatible version and dependencies.
