@@ -1,0 +1,14 @@
+NAME OF THE PLUGINS
+-------------------
+
+Build Pipeline Plugin - for pipleine script
+Deploy to container Plugin - deployer
+Eclipse Temurin installer Plugin- Provides an installer for the JDK tool that downloads the JDK from https://adoptium.net
+Email Extension Plugin (default)- plugins for email setup
+Maven Integration plugin- for maven integration
+Pipeline Maven Integration Plugin- 
+SonarQube Scanner for Jenkins - for SonarQube integration
+SSH Agent Plugin(default) - to establish SSH connection between two servers/machines
+SSH Build Agents plugin- Allows to launch agents over SSH, using a Java implementation of the SSH protocol.
+
+SSH2 Easy Plugin(recomended)-to establish SSH connection between two servers/machines
