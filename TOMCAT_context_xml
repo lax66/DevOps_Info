@@ -1,0 +1,16 @@
+EXAMPLE dir for the context.xml
+===============================
+/home/ubuntu/apache-tomcat-9.0.85/webapps/manager/META-INF
+
+NOTE === WE HAVE TO CONFIG THIS FILE FOR ALLOW THE ACCESS FOR THE TOMCAT SERVER FROM ANOTHER MACHINE
+====================================================================================================
+
+
+
+<Context antiResourceLocking="false" privileged="true" >
+  <CookieProcessor className="org.apache.tomcat.util.http.Rfc6265CookieProcessor"
+                   sameSiteCookies="strict" />
+  <Valve className="org.apache.catalina.valves.RemoteAddrValve"
+          allow=".*" />
+  <Manager sessionAttributeValueClassNameFilter="java\.lang\.(?:Boolean|Integer|Long|Number|String)|org\.apache\.catalina\.filters\.CsrfPreventionFilter\$LruCache(?:\$1)?|java\.util\.(?:Linked)?HashMap"/>
+</Context>
