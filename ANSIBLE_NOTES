@@ -1,0 +1,147 @@
+get EC2 instance
+================
+    take two ubuntu EC2 instance and login through its public IP from AWS.
+    one will ansible(control) and the other one will be the host node.
+
+
+steps to follow on both the machine
+==================================
+
+    ---add a user and password of it.
+        $sudo adduser newusername
+        $sudo passwd newusername
+
+---add that user to sudo group to get sudo previleeges.
+    $sudo usermod -aG sudo newusername
+
+    pwd
+    confirm pwd
+
+---add the user to sudoers file
+    $ sudo visudo
+    ansible ALL=(ALL) NOPASSWD: ALL
+
+    ---do these steps for ssh connection
+    $ sudo vi /etc/ssh/sshd_config
+    -> PermitRootLogin yes (make to yes)
+    -> comment PasswordAuthentication no
+    -> un-comment PasswordAuthentication yes
+
+    -> Restart the server
+
+    $ sudo service sshd restart
+
+
+
+
+
+Install Ansible in Control Node
+++++++++++++++++++++++++++++++
+    -> Switch to Ansible user 
+
+    $ sudo su ansible
+
+    -> Install Python
+
+    $ sudo yum install python3 -y
+
+    -> Check python version 
+
+    $ python --version (it will fail bcz we used python3)
+    $ python3 --version
+
+    -> Update python alternatives/ sybolink link (to use python3 as python) 
+
+    $ sudo ln -s /usr/bin/python3 /usr/bin/python
+
+
+    -> Check python version 
+
+    $ python --version
+
+    -> Install PIP (It is a python package manager)
+  
+    $ sudo yum -y install python3-pip
+
+    -> Install Ansible using Python PIP
+
+    $ pip3 install ansible --user  {if it's not installed then use (sudo apt install ansible)}
+
+    -> Verify ansible version 
+
+    $ ansible --version
+
+    ->  Create ansible folder under /etc
+
+    $ sudo mkdir /etc/ansible 
+
+    -> create ansible.cfg file under /etc/ansible And paste complete content from below git link. 
+
+    Copy the content and paste it in ansible.cfg file with below command
+ 
+    $ sudo vi /etc/ansible/ansible.cfg 
+ 
+                                  [defaults]
+                                  inventory = /path/to/your/inventory
+                                  remote_user = your_remote_user
+                                  private_key_file = /path/to/your/private/key/file.pem
+
+    -> Create hosts file under /etc/ansible. Sample content can found in below git link
+                                           
+    Copy the content and paste it in hosts file with below command
+                                            
+    $ sudo vi /etc/ansible/hosts
+
+                                            [web]
+                                            webserver ansible_host=192.168.1.10 ansible_user=your_remote_user ansible_ssh_private_key_file=/path/to/your/private/key/file.pem
+
+                                            [database]
+                                            dbserver ansible_host=192.168.1.11 ansible_user=your_remote_user ansible_ssh_private_key_file=/path/to/your/private/key/file.pem
+  
+                                            [app:children]
+                                            web
+                                            database
+
+
+
+
+Generate SSH Key In Control Node and  Copy SSH key into Host Node
+================================================================
+
+1) Now generate SSH key in Ansible Server (Control Node):
+
+     $ sudo su ansible
+     $ ssh-keygen
+
+
+2) Copy it to Host servers as ansible user:
+
+        $ ssh-copy-id ansible@<Host-Private-IP>
+      Ex : $ ssh-copy-id ansible@172.31.43.23
+
+      ---to check the connection 
+        ssh ansible@<privateIP>
+ 
+        Note: Repeat the below command by updating the HOST IP for all the HOST Servers. 
+
+
+3) Update Host Inventory in Ansible Server to add host server details. 
+
+      # vi /etc/ansible/hosts
+
+      # Connect using username and password
+      #192.168.1.105 ansible_user=ansible ansible_password=password
+
+      # Connect using username and pem(Make Sure Have pem file at given path)
+
+      #172.31.35.23 ansible_user=ec2-user ansible_ssh_private_key_file=~/aws.pem
+
+       # If ssh keys are copied
+       172.31.43.23
+
+
+
+4) Use ping module to test Ansible and after successful run you can see the below 
+output.
+
+      $ ansible all -m ping
