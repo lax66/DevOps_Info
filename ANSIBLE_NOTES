@@ -120,7 +120,7 @@ Generate SSH Key In Control Node and  Copy SSH key into Host Node
       Ex : $ ssh-copy-id ansible@172.31.43.23
 
       ---to check the connection 
-        ssh ansible@<privateIP>
+        ssh ansible@<privateIP>  [connection you can establish with other users on the host machine also no need to 'ssh-keygen' again]
  
         Note: Repeat the below command by updating the HOST IP for all the HOST Servers. 
 
