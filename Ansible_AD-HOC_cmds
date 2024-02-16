@@ -1,0 +1,128 @@
+Ansible AD-HOC Commands
++++++++++++++++++++++++
+
+-> switch to ansible user and run ansible ad-hoc commands 
+
+$ sudo su ansible
+
+=> To run any ansible command we will follow below syntax
+
+# ansible [ all / groupName / HostName / IP ] -m <<Module Name>> -a <<args>>
+
+Note: Here -m is the module name and -a is the arguments to module.
+
+Example:
+
+# It will display date from all host machines.
+$ ansible all -m shell -a date 
+
+# It will display uptime from all host machines.
+$ ansible all -m shell -a uptime
+
+There are two default groups, all and ungrouped. all contains every host. ungrouped contains all hosts that donâ€™t have another group
+
+# It will display the all the modules available in Ansible.
+$ ansible-doc -l
+
+# To display particular module information
+$ ansible-doc <moduleName>
+
+# To display shell module information
+$ ansible-doc shell
+
+# it will display details of copy module
+$ ansible-doc -l | grep "copy"
+
+#It will display more information about yum module
+$ ansible-doc yum
+
+
++++++++++++
+Ping Module
++++++++++++
+
+# It will ping all the servers which you have mentioned in inventory file (/etc/ansible/hosts)
+$ ansible all -m ping
+
+# It will display the output in single line.
+$ ansible all -m ping -o
+
+# Date of all machines
+$ ansible all -m shell -a 'date' 
+
+# Redhat release of all the machines
+$ ansible all -m shell -a 'cat /etc/*release' 
+
+# Kind of mount on all the machines
+$ ansible all -m shell -a 'mount' 
+
+# Check the service status on all the machines
+$ ansible all -b -m shell -a 'service sshd status' 
+
+# Here it will check the disk space use for all the nodes which are from dbservers group
+$ ansible dbservers -a "df -h" 
+
+# Here it will check the disk space use for all the nodes which are from webservers group
+$ ansible webservers -a "free -m"
+
+# Here it will display date from from webservers group
+$ ansible webservers -a "date"
+
++++++++++++++++
+Yum Module
++++++++++++++++
+
+# It will install vim package in all node machine which you have menyioned in host inventory file.
+$ ansible all -b -m yum -a "name=vim"
+
+# Check git version in all machines
+$ ansible all -m shell -a "git --version"
+
+# to install git client in all node machines
+$ ansible all -m shell -b -a "yum install git -y"
+
+# To installl git only in webserver nodes
+$ ansible webservers -m shell -b -a "yum install git -y"
+
+# To install webserver only in particular machine
+$ ansible 172.1921.1.0 -m shell -b -a "yum install git -y"
+
+$ ansible all -m shell -b -a "name=git state=present"
+$ ansible all -m shell -b -a "name=git state=latest"
+$ ansible all -m shell -b -a "name=git state=absent"
+
+present : install
+latest : update to latest
+absent : un-install
+
+# to install any software in ubuntu server then we should use apt package manager
+
+$ ansible all -m apt -a "name="git state="present"
+
+# To install httpd package in all node machines
+$ ansible all -b -m yum -a "name=httpd state=present"
+
+Note: Here state=present, is not a mandatory, it is by default.
+
+# To update httpd package in all node machines. 
+$ ansible all -b -m yum -a "name=httpd state=latest" 
+
+# To remove httpd package in all node machines.
+$ ansible all -b -m yum -a "name=httpd state=absent" 
+
+$ ansible all -m copy -a "src="index.html dest=/var/www/html/index.html"
+
+start httpd service 
+
+$ ansible all -b -m service -a "name=httpd state=started"
+
+$ ansible all -b -m shell -a "service httpd start"
+
+
+Note: For privilige escalations we can use -b option
+
+
+Q) Irrespective of underlying OS which module we can use to manage packages(softwares) using package manager in Ansible ?
+
+Ans)  Ansible introduced "package manager" to work with underlying package manager
+
