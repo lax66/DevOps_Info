@@ -1,0 +1,138 @@
+PLAYBOOK INTRO
+==============
+> Playbook is a single YAML file, containing one or more â€˜playsâ€™ in a list.
+
+-> Plays are ordered sets of tasks to execute against host servers from your inventory file.
+
+-> Play defines a set of activities (tasks) to be run on hosts.
+
+-> Task is an action to be perform on the host
+
+Examples are 
+
+ a) Execute a command
+ b) Run a shell script
+ c) Install a package
+ d) Shutdown/Restart the hosts
+
+
+Note : Playbooks start with the YAML three dashes (---) and end with â€¦
+
+-> Each play has first hosts, variables, and tasks
+
+
+FileName: pingServers.yml
+---------------------------------------
+---
+- hosts: all
+  gather_facts: no
+  remote_user: anisble
+  tasks:
+   - name : Test connection
+     ping:
+     remote_user: ansible
+
+
+#hosts: The tasks will be executing in specified group of servers.
+
+#name: which is the task name that will appear in your terminal when you run the playbook. 
+
+#remote_user: This parameter was formerly called just user. It was renamed in Ansible 1.4 to make it more distinguishable from the user module (used to create users on remote systems).
+
+Note : Remote users can also be defined per task.
+
+
+# Run the playbook Using below command
+
+$ ansible-playbook <<Playbbok file name>>
+
+# It will run the samplePlayBook.yml playbook in verbose
+
+$ ansible-playbook samplePlayBook.yml -v
+$ ansible-playbook samplePlayBook.yml -vv
+$ ansible-playbook samplePlayBook.yml -vvv
+
+$ It will provide help on ansible_playbook command
+$ ansible-playbook --help
+
+#  It will check the syntax of a playbook
+$ ansible-playbook playbook.yml --syntax-check
+
+# It will do in dry run.
+$ ansible-playbook playbook.yml --check
+
+# It will display the which hosts would be effected by a playbook before run
+$ ansible-playbook playbook.yml --list-hosts
+
+# It execute one-step-at-a-time, confirm each task before running with (N)o/(y)es/(c)ontinue
+$ ansible-playbook playbook.yml --step
+
+
+
+
+
+
+
+
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+=======================================================================================
+PLAYBOOK SAMPLES
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+======================================================================================
+
+
+# Write a playbook to ping all
+---
+- hosts: all
+  tasks:
+    -name: ping all host nodes
+    ping:
+    remote_user: ans
+
+
+# write a playbook to create a file in all host nodes
+
+- hosts: all
+  tasks:
+    - name: create a file in all host nodes
+      file:
+        path: /home/ans/Hello22.txt
+        state: touch
+
+#write a playbook to copy content into a file
+
+- hosts: all
+  tasks:
+    - name: copy content into a file
+      copy: content="hello World!" dest=/home/ans/Hello22.txt
+
+# Write a playbook to install and start httpd/apache2 in all host nodes
+- hosts: all
+  become: true
+  tasks:
+    - name: install apache2 package
+      apt:
+        name: apache2
+        state: latest
+    - name: start apache2 server
+      service:
+        name: apache2
+        state: started
+
+# Write a playbook to install hhtpd/apache2, copy index.html and start in all host nodes
+- hosts: all 
+  tasks:
+    - name: install apache2 package
+      apt:
+        name: apache2
+        state: latest
+    - name: copy index.html file
+      copy: 
+        src: index.html
+        dest: /var/www/html/index.html
+      become: true
+    - name: start apache2 service
+      service:  
+        name: apache2
+        state: started
+---
