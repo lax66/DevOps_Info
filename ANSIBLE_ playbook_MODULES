@@ -1,0 +1,84 @@
+-----apt: Manages apt packages on Debian/Ubuntu systems.
+
+- name: Install Apache on Debian/Ubuntu
+  apt:
+    name: apache2
+    state: present
+
+
+
+-----yum: Manages yum packages on Red Hat/CentOS systems.
+
+- name: Install Apache on Red Hat/CentOS
+  yum:
+    name: httpd
+    state: present
+
+
+----copy: Copies files from the local machine to remote hosts.
+
+- name: Copy configuration file
+  copy:
+    src: /path/to/local/file.conf
+    dest: /etc/remote/file.conf
+
+
+
+----file: Manages files and directories on remote hosts.
+
+- name: Ensure a directory exists
+  file:
+    path: /path/to/directory
+    state: directory
+
+
+
+----service: Manages system services.
+
+- name: Ensure Apache is running
+  service:
+    name: apache2
+    state: started
+
+
+----user: Manages user accounts.
+- name: Create a user
+  user:
+    name: john
+    state: present
+
+
+
+----group: Manages user groups.
+
+- name: Create a group
+  group:
+    name: developers
+    state: present
+
+
+----shell: Executes shell commands on remote hosts.
+
+- name: Run a command
+  shell: echo "Hello, world!"
+
+
+
+----template: Renders Jinja2 templates on the local machine and copies the result to the remote hosts.
+
+- name: Deploy a configuration file from a template
+  template:
+    src: templates/config.j2
+    dest: /etc/application/config
+
+
+
+----debug: Prints debug information during playbook execution.
+
+- name: Debug information
+  debug:
+    msg: "This is a debug message"
+
+
+
+These are just a few examples, and Ansible provides many more modules for a wide range of tasks. You can refer to the official Ansible documentation for a comprehensive list of modules and their usage: Ansible Modules
