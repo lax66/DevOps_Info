@@ -136,3 +136,63 @@ PLAYBOOK SAMPLES
         name: apache2
         state: started
 ---
+
+
+
+=======================================================
+ANSIBLE PLAYBOOK variable declared through COMMAND LINE
+=======================================================
+
+
+
+- hosts: all
+  become: true
+  tasks:
+    - name: install apache2 package
+      apt:
+        name: "{{package_name}}"
+        state: latest
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+    - name: start apache2 service
+      service:
+        name: "{{package_name}}"
+        state: started
+
+syntax--
+=======
+$ ansible-playbook hostSITE.yml --extra-vars package_name=apache2
+
+
+
+
+
+=========================================================
+ANSIBLE PLAYBOOK variable declared through PLAYBOOK itself
+==========================================================
+
+
+- hosts: all
+  become: true
+  vars:
+    package_name: apache2
+  tasks:
+    - name: install apache2 package
+      apt:
+        name: "{{package_name}}"
+        state: latest
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+    - name: start apache2 service
+      service:
+        name: "{{package_name}}"
+        state: started
+
+
+
+NOTE---- If we are declaring the variable in the playbook itself then we can run it as the default command
+         which is------ $ ansible-playbook hostSITE.yml
