@@ -139,6 +139,13 @@ PLAYBOOK SAMPLES
 
 
 
+                                                               ====================================================
+                                                               ====================================================
+                                                                            VARIABLES in PLAYBOOK
+                                                               ====================================================
+                                                               ====================================================
+
+
 =======================================================
 ANSIBLE PLAYBOOK variable declared through COMMAND LINE
 =======================================================
@@ -196,3 +203,70 @@ ANSIBLE PLAYBOOK variable declared through PLAYBOOK itself
 
 NOTE---- If we are declaring the variable in the playbook itself then we can run it as the default command
          which is------ $ ansible-playbook hostSITE.yml
+
+
+
+
+
+
+
+==============
+Group Variables
+==============
+
+
+
+
+-> For webservers i want to install git-2.1
+
+-> For dbservers i want to install git-2.3
+
+-> We can achieve this using group variables
+
+-> group vars files should be created at host inventory location 
+
+-> host-inventory location : /etc/ansible
+
+group_vars/all.yml
+group_vars/<groupName>.yml
+
+Ex: group_vars/webservers.yml
+      group_vars/dbservers.yml
+      group_vars/all.yml
+
+-> /etc/ansible/group_vars/all.yml
+
+-> create mkdir /etc/ansible/group_vars
+
+-> vi /etc/ansible/group_vars/all.yml
+test: abc
+
+-> vi /etc/ansible/group_vars/appservers.yml
+test: xyz
+
+
+Note: as we have group vars file for appservers it will consider xyz for appservers group and for remaining servers group it will take all.yml file value
+
+
+
+
+
+=========
+Host vars
+=========
+
+
+
+
+
+-> server specific variables
+
+-> In one group we will have multiple servers 
+
+-> For every host if we wan seperate variables then we should go for host vars
+
+-> mkdir /etc/ansible/host_vars
+
+-> create a file with host name or ip 
+
+-> vi /etc/ansible/host_vars/172.138.1.1.yml
