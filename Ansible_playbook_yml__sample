@@ -270,3 +270,84 @@ Host vars
 -> create a file with host name or ip 
 
 -> vi /etc/ansible/host_vars/172.138.1.1.yml
+
+
+
+
+
+
+
+
+
+============
+============
+Ansible Vault
+=============
+=============
+
+
+
+ansible-vault create <filename>.yml
+ansible-vault encrypt <filename>.yml
+ansible-vault view <filename>.yml
+ansible-vault edit <filename>.yml
+ansible-vault decrypt <filename>.yml
+ansible-vault rekey <filename>.yml
+
+
+-> To encrypt a playbook we need to set one vault password
+
+-> while executing playbook we need to pass vault password
+
+$ ansible-playbook <filename>.yml --ask-vault-pass
+
+-> You can store vault password in a file and you can give that file as input to execute playbook
+
+$ vi valutpass
+$ ansible-playbook filename.yml --vault-password-file=~/vaultpass
+
+# We can see encrypted file in human readable format
+$ ansible-vault view /etc/ansible/group_vars/all.yml
+
+# We can edit encrypted file in human readable format
+$ ansible-vault edit /etc/ansible/group_vars/all.yml
+
+# We can decrypt the file
+$ ansible-vault edit /etc/ansible/group_vars/all.yml
+
+# To update vault password we can use rekey
+$ ansible-vault rekey /etc/ansible/group_vars/all.yml
+
+
+
+
+
+
+============
+============
+HANDLERS
+============
+============
+
+
+- hosts: all
+  become: true
+  vars:
+    package_name: apache2
+  tasks:
+    - name: install "{{package_name}}" package
+      apt:
+        name: "{{package_name}}"
+        state: latest
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      notify:
+        - start apache2 service
+  handlers:
+    - name: start apache2 service
+      service:
+        name: "{{package_name}}"
+        state: started
+
