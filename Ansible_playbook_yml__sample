@@ -351,3 +351,124 @@ HANDLERS
         name: "{{package_name}}"
         state: started
 
+
+                                                                               =========================================
+                                                                                                TAGS
+                                                                                     ==============================
+
+
+
+
+
+-> We can use tags modules to execute certain/specific tasks only.
+-> Suppose we want to perform only copy the index.html file Then in the task section we need to give the tag and run the yml in the command line so that, that particular file only runs.
+-> If any changes are there then handlers will trigger if it's set.
+
+-> Here is the code of how we can use tags in the task.
+
+++++++++++++++++++++++++++++++++++++
+Handlers and Tags
+++++++++++++++++++++++++++++++++++++
+
+---
+- hosts: all
+  become: true
+  vars:
+    package_name: apache2
+  tasks:
+    - name: install "{{package_name}}" package
+      apt:
+        name: "{{package_name}}"
+        state: latest
+      tags:
+       - install
+    - name: copy index.html file
+      copy:
+        src: index.html
+        dest: /var/www/html/index.html
+      tags:
+        - copy
+      notify:
+        - start apache2 service
+  handlers:
+    - name: start apache2 service
+      service:
+        name: "{{package_name}}"
+        state: started
+
+=============================================
+# to run the specific task as tagged.
+$ ansible-playbook filename.yml --tags "copy"  /  $ ansible-playbook filename.yml --tags "install"
+
+
+# to display all tags available in playbook
+$ ansible-playbook filename.yml --list-tags
+
+
+
+$ ansible-playbook filename.yml --tags "debug,copy"
+
+$ ansible-playbook filename.yml --skip-tags
+
+
+
+
+
+
+
+
+
+
+
+
+
+++++++++++++++++++++++++++++++
+Installing Multiple Softwares 
+++++++++++++++++++++++++++++++
+- hosts: all
+  tasks:
+  - name: install softwares 
+    yum:
+	  name: "{{item}}"
+	  state: present
+	with_items:
+	- wget
+	- zip
+	- unzip
+
+
+
+++++++++++++++++++++++++++++++
+Another approach
+++++++++++++++++++++++++++++++
+- hosts: all
+  tasks:
+  - name: install softwares 
+    yum:
+	  name: ['wget', 'zip', 'unzip']
+	  state: present
+
+
+-> Scope of the variable is with in the playbook. We can refer vars in the tasks or templates which we are using the playbook.
+
+
+- hosts: all
+  tasks:
+  - name: vars demo
+	debug:
+	  msg: "var test value: {{test}}"
+  - name: copy file
+	template:
+		src: test.txt
+		dest: /tmp/test.txt
+  - name: cat the file
+	shell: "cat /tmp/test.txt"
+	register: output
+  - name: print file content
+	debug:
+		msg: "File Content {{output.stdout}}"
+		
+
+-> create file vi test.txt
+{{test}}
+
