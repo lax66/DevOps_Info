@@ -1,0 +1,97 @@
+Pre-Requisites 
++++++++++++++++
+
+1) Any Cloud Provider (AWS, Azure, GCP, Openstack etc..)
+2) IAM User account (Secret Key and Access Key)
+3) IAM User should have AmazonEc2FullAccess
+
+
+
+1) Create EC2 instance (RED HAT Linux)
+
+2) Connect to EC2 VM using Mobaxterm
+
+3) Swith to root user 
+	$ sudo su -
+
+4) Install unzip software
+	$ yum install wget unzip vim -y
+
+5) Download Terraform Software (https://www.terraform.io/downloads)
+
+$ sudo yum install -y yum-utils
+$ sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+$ sudo yum -y install terraform
+
+6) Check Terraform Version
+
+$ terraform -v
+
+7) Create IAM User with Programmatic Access and Provide 'AmazonEc2FullAccess'
+
+8) Download Secret Key and Access Key
+
+9) Write Terraform Script
+
+$ mkdir terraformscript
+$ cd terraformscripts
+$ vi FirstTFScript.tf
+
+
+
+
+                                                                          =======================================
+                                                                                  HCL command sample (main.tf)
+                                                                          =======================================
+
+provider "aws"{
+    region= "ap-south-1"
+    access_key= AKIA2HHCBMGTV2KIXS7E
+    secret_key= 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
+
+}
+resource "aws_instance" "AWSserver"{
+    ami = "ami-05a5bb48beb785bf1"
+    instance_type = "t2.micro"
+    key_name = "AmazonLinux"
+    security_groups = ["launch-wizard-27"]
+    tags = {
+        Name = "vm1"
+    }
+}
+
+
+
+
+
+
+
+
+
+
+10) Initialize Terraform using init command
+
+	$ terraform init
+
+11) Format your script (indent spaces)
+ 
+	$ terraform fmt 
+
+12) Validate Your Script 
+
+	$ terraform validate
+
+13) Create Execution Plan For Your Script 
+
+	$ terraform plan
+	
+14) Create Infrastructure 
+
+	$ terraform apply
+	$ terraform -auto-aprove
+	
+Note: When the script got executed it will store that state in a file. If we execute script again it will not create. If you delete that state file and execute script again then it will create it.	
+	
+15) Destory Infrastructure
+
+	$ terraform destroy -auto-aprove
