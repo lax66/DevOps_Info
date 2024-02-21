@@ -1,0 +1,112 @@
++++++++++++++++++
+Ansible Tower
++++++++++++++++++
+
+-> Ansible Tower is a web based GUI tool which is used to mange infrastructure configurations.
+
+-> We can centralize our infrastructure configurations using this UI
+
+-> We can do job scheduling
+
+-> It is providing graphical inventory management
+
+Ansible Tower features
+++++++++++++++++++++
+1) Clean dashboard
+2) Manage Iventory Dynamically
+3) Realtime Job Status
+4) Job Scheduling
+5) Integrate Internal Notification
+6) Rolebase access control (RABAC)
+7) Audit Job and Tower Resource
+8) Store Credentials safely
+9) REST API Integration
+10) Self Service UI
+
+Pre-Requisites to Install Ansible Tower
+++++++++++++++++++++++++++++++++++++++
+
+-> Red Hat Enterprise Linux 6 64-bit
+
+-> 20 GB Hard Disk
+
+-> 4 GB Ram
+
+-> Note: m4.large instance required
+
+
+Step-1 : Install Ansible Software
+
+# Update package manager
+$ sudo yum -y update
+
+# install epel package manager
+$ sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm -y
+
+# Check epl repositories install
+$ sudo dnf repolist epel
+
+# Ansible tower uses ansible playbook to deploy so we should install Ansible first
+$ sudo yum -y install ansible vim curl
+
+
+Step-2 : Download Ansible Tower Archieve Folder
+
+$ mkdir /tmp/tower && cd /tmp/tower
+
+$ curl -k -O https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
+
+$ ls 
+
+# Extract tar file
+$ tar xvf <tar-file>
+
+# Go to extracted folder and update admin_pwd and postgres_db pwd in inventory file
+$ vim inventoy
+
+# Run the script file to run playbook 
+$ sudo ./setup.sh
+
+Note: It will take 2 to 3 minutes
+
+# check ansible tower status
+$ sudo ansible-tower-service status
+
+# Start Ansible Tower
+$ sudo ansible-tower-service start
+
+Note: Open 443 port bcz Ansible Tower Running on HTTPS
+
+# Access EC2 VM IP in browser and login
+
+default uname : admin
+pwd : we have given in inventory file (ashokit)
+
+Note: This is enterprise product so we need license. We can get trail version 
+
+-> Create account in red hat and request for license
+
+	www.redhat.com/en/technologies/management/ansible/try-it
+	
+
+-> Click on 'Request license' -> Complete process
+
+(https://access.redhat.com/management/subscriptions)
+
+-> Loing with redhat account credentials
+
+
+
+# Configure 2 Host Nodes IN ec2
+
+1) Login into tower
+2) Create Groups and add hosts
+3) Create credentials with Machine and provide ssh private key
+
+-> Create Project 
+-> Give SCM as git repo url of playbooks
+
+
+
+
+
