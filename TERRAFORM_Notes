@@ -95,3 +95,157 @@ Note: When the script got executed it will store that state in a file. If we exe
 15) Destory Infrastructure
 
 	$ terraform destroy -auto-aprove
+
+
+
+
+
+
+
+
+
+
+
+												+++++++++++++++++++++++
+												Variables in TypeScript
+												+++++++++++++++++++++++
+
+
+-> We can maintain variables in seperate file
+
+$ vi vars.tf
+
+variable "ami"{
+ description="Amazon Machine Image value"
+ default = "ami-05c8ca4485f8b138a"
+}
+
+variable "instance_type"{
+   description="Amazon Instance Type"
+   default = "t2.micro"
+}
+
+variable "instances_count"{
+	description="Total No.of Instances"
+	default = "2"
+}
+
+-> Create main tf file using variables
+
+$ vi main.tf
+
+provider "aws" {
+  region = "ap-south-1"
+  access_key = "AKIA4MGQ5UW7WODCGJGJG"
+  secret_key = "d04co9pmnE6IJQS4z3F6T5xNj8XiubpUPhI"
+}
+
+resource "aws_instance" "AWSServer" {
+  count="${var.instances_count}"
+  ami = "${var.ami}"
+  instance_type = "${var.instance_type}"
+  key_name = "linux"
+  security_groups = ["launch-wizard-1"]
+  tags = {
+   Name = "Terrafrom Server - ${count.index}"
+  }
+}
+
+
+Note: We can supply variables in runtime also 
+
+-> Remove instances_count variable from var.tf file and pass like below
+
+$ terraform apply -var instances_count="2" -auto-aprove 
+
+
+
+
+
+													+++++++++++++++++++++++++++++
+													Comments in Terraform Script
+													+++++++++++++++++++++++++++++
+
+
+
+
+
+# - single line comment
+
+// - single line comment (java style)
+
+/* and */ - Multi line comments 
+
+
+
+
+
+
+										++++++++++++++++++++++++++++++++++++++
+										Dealing with Secret Key and Access Key
+										++++++++++++++++++++++++++++++++++++++
+
+
+
+
+-> We have configure secret_key and access_key in terraform script file. Instead of that we can configure them as environment variables.
+
+
+$ export AWS_ACCESS_KEY_ID="AKIA4MGQ5UW7WODA"
+$ export AWS_SECRET_ACCESS_KEY="d04co9pmnE6IJz3F6T5xNj8u"
+
+
+-> To verify environment variables we can use echo command 
+
+$ echo $AWS_ACCESS_KEY
+$ echo $AWS_SECRET_ACCESS_KEY
+
+-> Now remove credentials from terraform script and execute it.
+
+Note: We are setting provider credentials in terminal so these variables will be available for current session. If we want to set permanently add them in .bashrc file
+
+
+
+
+																
+													
+													+++++++++++++++++++++++
+													Working with User Data
+													+++++++++++++++++++++++
+
+
+
+-> It is used to execute script when instance launched for first time.
+
+-> Create Userdata in one file 
+
+$ vi installHttpd.sh
+
+#!/bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Laxmikanta Giri</h1></html>" > index.html
+service httpd start
+
+
+
+$ chmod u+x installHttpd.sh
+
+
+-> create main scrit in main.tf file
+
+-> vi main.tf
+
+resource "aws_instance" "AWSserver" {
+  count           = var.instance_count
+  ami             = var.ami
+  instance_type   = var.instance_type
+  key_name        = "AmazonLinux"
+  security_groups = ["launch-wizard-27"]
+  user_data       = file("installHttpd.sh")
+  tags = {
+    Name = "vm${count.index + 1}" # This will tag instances as vm1, vm2, vm3, etc.
+
+
+NOTE- if you don't have the providers.tf separately then you have to mention the provider details here in the main.tf.
