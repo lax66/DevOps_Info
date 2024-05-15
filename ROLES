@@ -1,0 +1,30 @@
+"In my previous company, I was actively involved in a significant project that focused on migrating our infrastructure from an on-premises data center to the AWS cloud. This project was pivotal for modernizing our infrastructure, enhancing scalability, and improving overall efficiency. As part of the team, I played a crucial role in various aspects of the migration process, including setting up the Virtual Private Cloud (VPC), defining IP ranges, migrating object storage to S3 Buckets, and configuring Elastic File System (EFS) for shared storage.
+
+Additionally, I contributed to configuring Auto Scaling Groups, Launch Configurations, and ensuring secure network access through the setup of public and private subnets, Internet Gateways, and Network Access Control Lists (NACLs). I also collaborated on the implementation of other AWS services such as Simple Notification Service (SNS) and Route53 for notifications and DNS management.
+
+Moreover, I participated in setting up the Bastion/Jump server for secure access to database servers and assisted in establishing continuous integration and continuous delivery (CI/CD) pipelines using tools like Git, GitHub, and Jenkins. This automation significantly improved our deployment processes and maintained a high level of reliability and efficiency in our software delivery pipeline.
+
+Although I didn't lead the project, my contributions were instrumental in its success, and I gained valuable experience in managing cloud infrastructure and implementing best practices for migration projects."
+
+
+
+
+
+
+
+project2---
+
+
+"As a DevOps engineer working on the automated deployment pipeline for our banking application, my day-to-day activities involved a dynamic mix of tasks aimed at ensuring the smooth operation and continuous improvement of our deployment process.
+
+Each morning, I would start by reviewing the status of our deployment pipeline in Jenkins, ensuring that all builds and deployments from the previous day completed successfully. If there were any issues, I would troubleshoot and resolve them promptly to maintain the integrity of our pipeline.
+
+Next, I would collaborate with the development and testing teams to understand any new features or updates planned for deployment. This might involve attending stand-up meetings to discuss project progress and potential challenges.
+
+Throughout the day, I would work on various aspects of our deployment pipeline. This could include creating and updating Kubernetes configurations to manage our containerized application across different environments, crafting Docker images to encapsulate our code and dependencies, or writing Ansible playbooks to ensure consistent environment configurations.
+
+I would also spend time monitoring the health and performance of our infrastructure using AWS management tools, ensuring that our resources were optimized for cost and efficiency. Additionally, I would conduct regular code reviews using SonarQube to maintain high code quality standards.
+
+In between these tasks, I would be available to assist team members with any deployment-related issues or questions they might have, providing guidance and support as needed.
+
+At the end of each day, I would take time to reflect on our progress, identify areas for improvement, and plan for any upcoming tasks or projects. This iterative approach allowed us to continuously refine our deployment process and deliver value to our stakeholders with each iteration."
